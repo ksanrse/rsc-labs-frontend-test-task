@@ -1,5 +1,9 @@
 # Запуск и тестирование проекта
 
+## Требование
+
+Node.js 22 версии и выше
+
 ## Установка
 
 ```bash
@@ -23,3 +27,4 @@ pnpm run test
 ```bash
 pnpm run lint
 pnpm run lint --fix
+```
