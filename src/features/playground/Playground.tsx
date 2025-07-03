@@ -71,7 +71,7 @@ export default function Playground() {
         }
         try {
           const latency = active.latency ?? 0;
-          const resp = await fetch('/api/mock-message');
+          const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || ''}/api/mock-message`);
           if (resp.ok) {
             const { id, message } = await resp.json();
             await new Promise((res) => setTimeout(res, latency));
@@ -113,7 +113,7 @@ export default function Playground() {
           return;
         }
         try {
-          const resp = await fetch('/api/mock-message');
+          const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || ''}/api/mock-message`);
           if (resp.ok) {
             const { id, message } = await resp.json();
             setMessages((msgs) => [{ id, message }, ...msgs]);

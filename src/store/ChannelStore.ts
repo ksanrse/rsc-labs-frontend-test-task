@@ -158,7 +158,7 @@ export const useChannelStore = create<ChannelState>((set, get) => ({
       channels.map(async (chan) => {
         const t0 = performance.now();
         try {
-          const resp = await fetch(`/api/ping/${chan.id}`);
+          const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || ''}/api/ping/${chan.id}`);
           if (!resp.ok) throw new Error();
           const latency = Math.round(performance.now() - t0);
           return {
