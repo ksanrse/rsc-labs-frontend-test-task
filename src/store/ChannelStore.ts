@@ -20,7 +20,6 @@ interface ChannelState {
   delaySwitch: boolean;
   setDelaySwitch: (delay: boolean) => void;
   pendingSwitch: boolean;
-  recentlyFailedId?: string | null;
 }
 
 type PingResult = {
@@ -44,23 +43,39 @@ export const useChannelStore = create<ChannelState>((set, get) => ({
 
   delaySwitch: false,
   pendingSwitch: false,
-  recentlyFailedId: null,
 
   setDelaySwitch: async (delay: boolean) => {
     set({ delaySwitch: delay });
-    useLogStore.getState().addLog(`setDelaySwitch: delay=${delay}, pendingSwitch=${get().pendingSwitch}`, 'info');
+    useLogStore
+      .getState()
+      .addLog(
+        `setDelaySwitch: delay=${delay}, pendingSwitch=${get().pendingSwitch}`,
+        'info'
+      );
     if (!delay && get().pendingSwitch) {
       set({ pendingSwitch: false });
-      useLogStore.getState().addLog(`setDelaySwitch: calling pingAll due to pendingSwitch`, 'info');
+      useLogStore
+        .getState()
+        .addLog(`setDelaySwitch: calling pingAll due to pendingSwitch`, 'info');
       await get().pingAll();
     }
   },
 
   setStatus: (id, status) => {
-    useLogStore.getState().addLog(`setStatus: id=${id}, status=${status}, delaySwitch=${get().delaySwitch}, pendingSwitch=${get().pendingSwitch}`, 'info');
+    useLogStore
+      .getState()
+      .addLog(
+        `setStatus: id=${id}, status=${status}, delaySwitch=${get().delaySwitch}, pendingSwitch=${get().pendingSwitch}`,
+        'info'
+      );
     const prevConnected = get().channels.find((c) => c.status === 'connected');
     if (prevConnected && prevConnected.id === id && status === 'unavailable') {
-      useLogStore.getState().addLog(`setStatus: Active channel ${id} becoming unavailable. delaySwitch=${get().delaySwitch}`, 'info');
+      useLogStore
+        .getState()
+        .addLog(
+          `setStatus: Active channel ${id} becoming unavailable. delaySwitch=${get().delaySwitch}`,
+          'info'
+        );
       if (get().delaySwitch) {
         set((state) => ({
           channels: state.channels.map((c) =>
@@ -77,7 +92,12 @@ export const useChannelStore = create<ChannelState>((set, get) => ({
           id,
           status: 'unavailable',
         });
-        useLogStore.getState().addLog(`setStatus: delaySwitch is ON, pendingSwitch set to true. No immediate switch.`, 'info');
+        useLogStore
+          .getState()
+          .addLog(
+            `setStatus: delaySwitch is ON, pendingSwitch set to true. No immediate switch.`,
+            'info'
+          );
         return;
       }
     }
@@ -135,7 +155,12 @@ export const useChannelStore = create<ChannelState>((set, get) => ({
       status === 'unavailable' &&
       !get().delaySwitch
     ) {
-      useLogStore.getState().addLog(`setStatus: delaySwitch is OFF, performing immediate pingAll.`, 'info');
+      useLogStore
+        .getState()
+        .addLog(
+          `setStatus: delaySwitch is OFF, performing immediate pingAll.`,
+          'info'
+        );
       void get().pingAll();
     }
   },
@@ -158,7 +183,9 @@ export const useChannelStore = create<ChannelState>((set, get) => ({
       channels.map(async (chan) => {
         const t0 = performance.now();
         try {
-          const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || ''}/api/ping/${chan.id}`);
+          const resp = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL || ''}/api/ping/${chan.id}`
+          );
           if (!resp.ok) throw new Error();
           const latency = Math.round(performance.now() - t0);
           return {

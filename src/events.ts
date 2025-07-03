@@ -1,3 +1,5 @@
+import { ChannelStatus } from './store/ChannelStore';
+
 type ChannelEventType =
   | 'CHANNEL_STATUS_CHANGED'
   | 'CHANNEL_BECAME_AVAILABLE'
@@ -5,7 +7,7 @@ type ChannelEventType =
   | 'CHANNEL_SWITCHED';
 
 type ChannelEventPayload =
-  | { type: 'CHANNEL_STATUS_CHANGED'; id: string; status: string }
+  | { type: 'CHANNEL_STATUS_CHANGED'; id: string; status: ChannelStatus }
   | { type: 'CHANNEL_BECAME_AVAILABLE'; id: string }
   | { type: 'CHANNEL_ALL_UNAVAILABLE' }
   | { type: 'CHANNEL_SWITCHED'; id: string };

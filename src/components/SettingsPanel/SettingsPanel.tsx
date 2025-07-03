@@ -41,7 +41,7 @@ export function SettingsPanel({ onClearMessages }: SettingsPanelProps) {
           <label className="toggle-switch">
             <input
               type="checkbox"
-              id="unstable-channels-toggle"
+              id="notifications-toggle"
               checked={notificationsEnabled}
               onChange={(e) => setNotificationsEnabled(e.target.checked)}
             />
@@ -90,15 +90,6 @@ export function SettingsPanel({ onClearMessages }: SettingsPanelProps) {
         </p>
       </div>
 
-      <div className="setting-item">
-        <label>Частота пинга (мс):</label>
-        <input
-          type="number"
-          min={500}
-          value={pingInterval}
-          onChange={(e) => setPingInterval(Number(e.target.value))}
-        />
-      </div>
       <div className="setting-item">
         <label>Частота новых сообщений (мс):</label>
         <input
