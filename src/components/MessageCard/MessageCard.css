@@ -1,0 +1,20 @@
+.message-card {
+  background-color: var(--second-background-color);
+
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+
+  padding: 40px;
+  margin: 10px 0;
+
+  font-size: 14px;
+}
+
+.message-card__label {
+  color: var(--second-text-color);
+  margin-bottom: 10px;
+}
+
+.message-card__body {
+  color: var(--main-text-color);
+}

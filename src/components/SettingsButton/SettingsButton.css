@@ -1,0 +1,29 @@
+.settings-icon-button {
+  width: 57px;
+  height: 57px;
+
+  align-items: center;
+  padding: 0;
+
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--second-background-color);
+
+  display: flex;
+  justify-content: center;
+}
+
+.settings-icon-button img {
+  transition: transform 0.2s ease-in-out;
+}
+
+.settings-icon-button:hover img {
+  transform: rotate(100deg);
+}
+
+.settings-button-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1010;
+}
