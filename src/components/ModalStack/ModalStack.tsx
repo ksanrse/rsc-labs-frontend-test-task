@@ -9,13 +9,14 @@ export function ModalStack({
   onOverlayClick?: () => void;
 }) {
   if (!modals.length) return null;
+
+  const handleModalClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <div className="modal-stack-overlay" onClick={onOverlayClick}>
-      <div
-        className="modal-stack"
-        style={{ gap: 10 }}
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="modal-stack" onClick={handleModalClick}>
         {modals}
       </div>
     </div>
