@@ -152,71 +152,18 @@ export default function Playground() {
             typeof first.id === 'string' &&
             typeof first.message === 'string'
           ) {
-            setMessages((msgs) => [first, ...msgs]);
+            setMessages((msgs) => {
+              if (msgs.some(msg => msg.id === first.id)) {
+                return msgs;
+              }
+              return [first, ...msgs];
+            });
           } else {
             console.warn('Некорректный элемент в буфере:', first);
           }
           return rest;
         });
-      } else {
-        const channels = useChannelStore.getState().channels;
-        const getActiveChannelId =
-          useChannelStore.getState().getActiveChannelId;
-        const activeId = getActiveChannelId();
-        const active = channels.find((c) => c.id === activeId);
-        if (!active || active.status === 'unavailable') {
-          return;
-        }
 
-        isFetchingMessageRef.current = true; 
-        try {
-          const resp = await fetch(
-            `${import.meta.env.VITE_API_BASE_URL || ''}/api/mock-message`
-          );
-          if (resp.ok) {
-            const contentType = resp.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')) {
-              let data;
-              try {
-                data = await resp.json();
-              } catch (jsonError) {
-                console.error(
-                  'Ошибка парсинга JSON при прямом добавлении:',
-                  jsonError,
-                  'Ответ:',
-                  await resp.text()
-                );
-                return;
-              }
-
-              if (
-                data &&
-                typeof data.id === 'string' &&
-                typeof data.message === 'string'
-              ) {
-                const { id, message } = data;
-                setMessages((msgs) => [{ id, message }, ...msgs]);
-              } else {
-                console.warn(
-                  'Получены некорректные данные сообщения при прямом добавлении:',
-                  data
-                );
-              }
-            } else {
-              console.warn('Ответ не является JSON:', await resp.text());
-            }
-          } else {
-            console.error(
-              'Ошибка при получении сообщения:',
-              resp.status,
-              resp.statusText
-            );
-          }
-        } catch (error) {
-          console.error('Ошибка при запросе сообщения:', error);
-        } finally {
-          isFetchingMessageRef.current = false;
-        }
       }
     }, messageInterval);
     return () => {
